@@ -14,6 +14,6 @@ sudo ./list-gke -project=<PROJECTNAME> -zone=<ZONE>
 Example output:
 
 ```
-Cluster Name: test-k8s |  Node Count: 3 | Machine Type: e2-standard-4
-Cluster Name: gke |  Node Count: 4 | Machine Type: e2-standard-4
+Cluster Name: fred-k8s                  |  Node Count: 3 | Machine Type: e2-standard-4 
+Cluster Name: gke                       |  Node Count: 4 | Machine Type: e2-standard-4 
 ```

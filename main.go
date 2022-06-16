@@ -53,14 +53,16 @@ func listClusters(svc *container.Service, projectID, zone string) error {
 		return fmt.Errorf("failed to list clusters: %v", err)
 	}
 	for _, v := range list.Clusters {
-		fmt.Printf("Cluster Name: %s |  Node Count: %v | ", v.Name, v.CurrentNodeCount)
+		fmt.Printf("Cluster Name: %s \t\t\t|  Node Count: %v | ", v.Name, v.CurrentNodeCount)
+		//		fmt.Printf("Cluster Name: %s \t ", v.Name)
+		//		fmt.Printf("Node Count:", v.CurrentNodeCount)
 
 		poolList, err := svc.Projects.Zones.Clusters.NodePools.List(projectID, zone, v.Name).Do()
 		if err != nil {
 			return fmt.Errorf("failed to list node pools for cluster %q: %v", v.Name, err)
 		}
 		for _, np := range poolList.NodePools {
-			fmt.Printf("Machine Type: %s\n", np.Config.MachineType)
+			fmt.Printf("Machine Type: %s \n", np.Config.MachineType)
 		}
 
 	}
