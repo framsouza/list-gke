@@ -7,6 +7,8 @@ import (
 	"log"
 	"os"
 
+	"text/tabwriter"
+
 	"golang.org/x/oauth2/google"
 	container "google.golang.org/api/container/v1"
 )
@@ -48,21 +50,27 @@ func main() {
 }
 
 func listClusters(svc *container.Service, projectID, zone string) error {
+	w := new(tabwriter.Writer)
+	w.Init(os.Stdout, 8, 8, 0, '\t', 0)
+	defer w.Flush()
+
 	list, err := svc.Projects.Zones.Clusters.List(projectID, zone).Do()
 	if err != nil {
 		return fmt.Errorf("failed to list clusters: %v", err)
 	}
+
+	fmt.Fprintf(w, "%s\t%s\t%s\t", "CLUSTER NAME", "NODE COUNT", "MACHINE TYPE")
+
 	for _, v := range list.Clusters {
-		fmt.Printf("Cluster Name: %s \t\t\t|  Node Count: %v | ", v.Name, v.CurrentNodeCount)
-		//		fmt.Printf("Cluster Name: %s \t ", v.Name)
-		//		fmt.Printf("Node Count:", v.CurrentNodeCount)
+		fmt.Fprintf(w, "\n%s\t", v.Name)
+		fmt.Fprintf(w, "%d\t", v.CurrentNodeCount)
 
 		poolList, err := svc.Projects.Zones.Clusters.NodePools.List(projectID, zone, v.Name).Do()
 		if err != nil {
 			return fmt.Errorf("failed to list node pools for cluster %q: %v", v.Name, err)
 		}
 		for _, np := range poolList.NodePools {
-			fmt.Printf("Machine Type: %s \n", np.Config.MachineType)
+			fmt.Fprintf(w, "%s\t\t", np.Config.MachineType)
 		}
 
 	}
