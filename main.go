@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 
 	"text/tabwriter"
 
@@ -60,6 +61,10 @@ func listClusters(svc *container.Service, projectID, zone string) error {
 	}
 
 	fmt.Fprintf(w, "%s\t%s\t%s\t", "CLUSTER NAME", "NODE COUNT", "MACHINE TYPE")
+
+	sort.Slice(list.Clusters, func(i, j int) bool {
+		return list.Clusters[i].CurrentNodeCount > list.Clusters[j].CurrentNodeCount
+	})
 
 	for _, v := range list.Clusters {
 		fmt.Fprintf(w, "\n%s\t", v.Name)
