@@ -8,7 +8,7 @@ First, make sure you have the `GOOGLE_APPLICATION_CREDENTIALS` environment varia
 It will require two arguments, `project` and `zone`. By default the zone is set to `-`, which means all zones will be retrieved. 
 
 ```
-sudo ./list-gke -project=<PROJECTNAME> -zone=<ZONE>
+sudo ./list-gke -project=<PROJECTNAME> 
 ```
 
 Example output:
